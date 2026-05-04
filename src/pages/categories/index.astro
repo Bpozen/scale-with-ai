@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCategories } from '../../lib/api';
+
+const categories = await getCategories();
+---
+
+<Layout title="KI-Tool Kategorien — Scale With AI">
+  <h1 class="text-3xl font-bold mb-4">KI-Tool Kategorien</h1>
+  <p class="text-gray-600 mb-8">Finde KI-Tools nach Anwendungsbereich.</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {categories.map(cat => (
+      <a href={`/categories/${cat.slug}`} class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+        <h2 class="text-xl font-semibold mb-2">{cat.name_de}</h2>
+        <p class="text-gray-600 text-sm">{cat.description_de}</p>
+      </a>
+    ))}
+  </div>
+</Layout>

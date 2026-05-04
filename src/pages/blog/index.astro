@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getBlogPosts } from '../../lib/api';
+
+const posts = await getBlogPosts();
+---
+
+<Layout title="KI-Tools Blog — Scale With AI">
+  <h1 class="text-3xl font-bold mb-4">Blog</h1>
+  <p class="text-gray-600 mb-8">Neueste Artikel zu KI-Tools, DSGVO und Automation.</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {posts.map(post => (
+      <article class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+        <h2 class="text-xl font-semibold mb-2">
+          <a href={`/blog/${post.slug}`} class="hover:text-blue-600">{post.title_de}</a>
+        </h2>
+        <p class="text-gray-600 text-sm line-clamp-3">{post.excerpt_de || post.content_de.slice(0, 200)}...</p>
+        {post.published_at && (
+          <time class="text-xs text-gray-400 mt-4 block">
+            {new Date(post.published_at).toLocaleDateString('de-DE')}
+          </time>
+        )}
+      </article>
+    ))}
+  </div>
+</Layout>

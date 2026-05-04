@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getBlogPostBySlug } from '../../lib/api';
+
+const { slug } = Astro.params;
+const post = await getBlogPostBySlug(slug!);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.title_de,
+  "description": post.meta_description || post.excerpt_de,
+  "datePublished": post.published_at,
+  "publisher": {
+    "@type": "Organization",
+    "name": "Scale With AI"
+  }
+};
+---
+
+<Layout
+  title={`${post.title_de} | Scale With AI Blog`}
+  description={post.meta_description || post.excerpt_de || undefined}
+  canonical={`https://scale-with-ai.de/blog/${post.slug}`}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <article class="max-w-3xl mx-auto">
+    <h1 class="text-3xl md:text-4xl font-bold mb-4">{post.title_de}</h1>
+    {post.published_at && (
+      <time class="text-sm text-gray-500 mb-8 block">
+        {new Date(post.published_at).toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </time>
+    )}
+    <div class="prose prose-lg max-w-none text-gray-800 leading-relaxed">
+      {post.content_de}
+    </div>
+  </article>
+</Layout>

@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolCard from '../../components/ToolCard.astro';
+import { getCategoryBySlug } from '../../lib/api';
+
+const { slug } = Astro.params;
+const result = await getCategoryBySlug(slug!);
+
+if (!result) {
+  return Astro.redirect('/404');
+}
+
+const { category, tools } = result;
+---
+
+<Layout title={`${category.name_de} — KI-Tools | Scale With AI`} description={category.description_de || undefined}>
+  <h1 class="text-3xl font-bold mb-2">{category.name_de}</h1>
+  {category.description_de && <p class="text-gray-600 mb-8">{category.description_de}</p>}
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {tools.map(tool => <ToolCard tool={tool} />)}
+  </div>
+
+  {tools.length === 0 && (
+    <p class="text-gray-500 text-center py-12">Noch keine Tools in dieser Kategorie.</p>
+  )}
+</Layout>

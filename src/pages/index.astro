@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ToolCard from '../components/ToolCard.astro';
+import { getTools, getCategories, getBlogPosts } from '../lib/api';
+
+const tools = await getTools();
+const categories = await getCategories();
+const posts = await getBlogPosts();
+const featuredTools = tools.slice(0, 6);
+const latestPosts = posts.slice(0, 3);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Scale With AI",
+  "url": "https://scale-with-ai.de",
+  "description": "Die besten KI-Tools für deutsches Business",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Scale With AI"
+  }
+};
+---
+
+<Layout title="Scale With AI — Die besten KI-Tools für Deutschland" canonical="https://scale-with-ai.de/">
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <section class="text-center py-16">
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+      KI-Tools für deutsches Business
+    </h1>
+    <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+      Finde die besten KI-Tools mit DSGVO-Check. Vergleiche, teste und skaliere dein Business.
+    </p>
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="/tools" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+        Alle KI-Tools entdecken
+      </a>
+      <a href="/categories" class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg border border-blue-600 hover:bg-blue-50 transition-colors">
+        Nach Kategorie filtern
+      </a>
+    </div>
+  </section>
+
+  <section class="py-12">
+    <h2 class="text-2xl font-bold mb-6">Beliebte Kategorien</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      {categories.map(cat => (
+        <a href={`/categories/${cat.slug}`} class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow text-center">
+          <h3 class="font-semibold text-gray-900">{cat.name_de}</h3>
+          <p class="text-sm text-gray-500 mt-1">{cat.description_de?.slice(0, 60)}...</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="py-12">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold">Empfohlene KI-Tools</h2>
+      <a href="/tools" class="text-blue-600 hover:text-blue-800 font-medium">Alle anzeigen →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {featuredTools.map(tool => <ToolCard tool={tool} />)}
+    </div>
+  </section>
+
+  {latestPosts.length > 0 && (
+    <section class="py-12">
+      <h2 class="text-2xl font-bold mb-6">Neueste Artikel</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {latestPosts.map(post => (
+          <article class="bg-white border border-gray-200 rounded-lg p-6">
+            <h3 class="font-semibold text-lg mb-2">
+              <a href={`/blog/${post.slug}`} class="hover:text-blue-600">{post.title_de}</a>
+            </h3>
+            <p class="text-gray-600 text-sm line-clamp-3">{post.excerpt_de}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+</Layout>

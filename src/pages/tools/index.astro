@@ -1,0 +1,14 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SearchBar from '../../components/SearchBar.tsx';
+import { getTools } from '../../lib/api';
+
+const tools = await getTools();
+---
+
+<Layout title="KI-Tools Verzeichnis — Scale With AI">
+  <h1 class="text-3xl font-bold mb-4">KI-Tools Verzeichnis</h1>
+  <p class="text-gray-600 mb-8">Finde die besten KI-Tools für dein Business. Mit DSGVO-Check und deutschen Preisen.</p>
+
+  <SearchBar tools={tools} client:load />
+</Layout>

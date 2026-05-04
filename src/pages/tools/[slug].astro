@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DSGVOBadge from '../../components/DSGVOBadge.astro';
+import AffiliateCTA from '../../components/AffiliateCTA.astro';
+import ReviewSection from '../../components/ReviewSection.tsx';
+import { getToolBySlug } from '../../lib/api';
+
+const { slug } = Astro.params;
+const tool = await getToolBySlug(slug!);
+
+if (!tool) {
+  return Astro.redirect('/404');
+}
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": tool.name,
+  "description": tool.description_de,
+  "url": tool.website_url,
+  "applicationCategory": "BusinessApplication",
+  "offers": {
+    "@type": "Offer",
+    "price": tool.price_from,
+    "priceCurrency": tool.price_currency,
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.0",
+    "reviewCount": "1",
+  },
+};
+---
+
+<Layout
+  title={`${tool.name} — KI-Tool Review | Scale With AI`}
+  description={tool.description_de}
+  canonical={`https://scale-with-ai.de/tools/${tool.slug}`}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2">
+      <div class="flex items-center gap-4 mb-6">
+        {tool.logo_url && (
+          <img src={tool.logo_url} alt={`${tool.name} Logo`} class="w-16 h-16 object-contain" />
+        )}
+        <div>
+          <h1 class="text-3xl font-bold">{tool.name}</h1>
+          <div class="flex items-center gap-2 mt-2">
+            <DSGVOBadge status={tool.dsgvo_status} serverLocation={tool.server_location} />
+            <span class="text-sm text-gray-500">{tool.headquarters}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+        <h2 class="text-lg font-semibold mb-3">Über das Tool</h2>
+        <p class="text-gray-700 leading-relaxed">{tool.description_de}</p>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+        <h2 class="text-lg font-semibold mb-3">Details</h2>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <dt class="text-sm text-gray-500">Preismodell</dt>
+            <dd class="font-medium capitalize">{tool.pricing_model || 'Unbekannt'}</dd>
+          </div>
+          <div>
+            <dt class="text-sm text-gray-500">Preis ab</dt>
+            <dd class="font-medium">{tool.price_from !== null ? `${tool.price_from} ${tool.price_currency}` : 'Auf Anfrage'}</dd>
+          </div>
+          <div>
+            <dt class="text-sm text-gray-500">Free-Tier</dt>
+            <dd class="font-medium">{tool.has_free_tier ? 'Ja' : 'Nein'}</dd>
+          </div>
+          <div>
+            <dt class="text-sm text-gray-500">DSGVO-Status</dt>
+            <dd class="font-medium">{tool.dsgvo_status || 'Unklar'}</dd>
+          </div>
+          <div>
+            <dt class="text-sm text-gray-500">Server-Standort</dt>
+            <dd class="font-medium">{tool.server_location || 'Unbekannt'}</dd>
+          </div>
+          <div>
+            <dt class="text-sm text-gray-500">AufAV</dt>
+            <dd class="font-medium">{tool.data_processing_agreement ? 'Ja' : 'Nein'}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <ReviewSection toolId={tool.id} initialReviews={tool.reviews || []} client:load />
+    </div>
+
+    <aside class="space-y-6">
+      <div class="bg-white border border-gray-200 rounded-lg p-6 sticky top-24">
+        <h3 class="font-semibold mb-4">Jetzt testen</h3>
+        {tool.affiliate_url ? (
+          <AffiliateCTA url={tool.affiliate_url} />
+        ) : (
+          <a href={tool.website_url} target="_blank" rel="noopener" class="inline-flex items-center justify-center w-full px-6 py-3 bg-gray-100 text-gray-900 font-semibold rounded-lg hover:bg-gray-200">
+            Website besuchen ↗
+          </a>
+        )}
+
+        <div class="mt-6 pt-6 border-t border-gray-100">
+          <h4 class="text-sm font-semibold text-gray-500 mb-2">Kategorien</h4>
+          <div class="flex flex-wrap gap-2">
+            {tool.categories?.map((tc: any) => (
+              <a href={`/categories/${tc.category.slug}`} class="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded-full hover:bg-gray-200">
+                {tc.category.name_de}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</Layout>
