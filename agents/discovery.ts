@@ -74,33 +74,37 @@ async function saveDiscovery(tools: DiscoveredTool[]): Promise<number> {
   let queued = 0;
 
   for (const tool of tools) {
-    const slug = tool.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    try {
+      const slug = tool.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-    // Check if exists
-    const { data: existing } = await supabase
-      .from('tools')
-      .select('id')
-      .eq('slug', slug)
-      .maybeSingle();
+      // Check if exists
+      const { data: existing } = await supabase
+        .from('tools')
+        .select('id')
+        .eq('slug', slug)
+        .maybeSingle();
 
-    if (existing) continue;
+      if (existing) continue;
 
-    // Queue for research
-    const { error } = await supabase
-      .from('agent_jobs')
-      .insert({
-        agent_type: 'research',
-        status: 'pending',
-        payload: {
-          name: tool.name,
-          website_url: tool.website_url,
-          slug,
-          source: tool.source,
-          tagline: tool.tagline,
-        },
-      });
+      // Queue for research
+      const { error } = await supabase
+        .from('agent_jobs')
+        .insert({
+          agent_type: 'research',
+          status: 'pending',
+          payload: {
+            name: tool.name,
+            website_url: tool.website_url,
+            slug,
+            source: tool.source,
+            tagline: tool.tagline,
+          },
+        });
 
-    if (!error) queued++;
+      if (!error) queued++;
+    } catch (err) {
+      console.error(`Failed to queue ${tool.name}:`, err);
+    }
   }
 
   return queued;
