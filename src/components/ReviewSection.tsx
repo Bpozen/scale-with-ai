@@ -22,16 +22,22 @@ export default function ReviewSection({ toolId, initialReviews }: ReviewSectionP
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/reviews', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tool_id: toolId, rating, content_de: content, author_name: author }),
-    });
-    if (res.ok) {
+    try {
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tool_id: toolId, rating, content_de: content, author_name: author }),
+      });
+      if (!res.ok) {
+        console.error('Failed to submit review:', res.status);
+        return;
+      }
       const newReview = await res.json();
-      setReviews([newReview, ...reviews]);
+      setReviews(prev => [newReview, ...prev]);
       setContent('');
       setAuthor('');
+    } catch (err) {
+      console.error('Review submission error:', err);
     }
   };
 
