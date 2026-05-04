@@ -1,0 +1,37 @@
+/* src/styles/global.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  .badge-dsgvo-voll {
+    @apply bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium;
+  }
+  .badge-dsgvo-teilweise {
+    @apply bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full font-medium;
+  }
+  .badge-dsgvo-unklar {
+    @apply bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full font-medium;
+  }
+  .badge-dsgvo-nein {
+    @apply bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium;
+  }
+  .pricing-free {
+    @apply bg-green-50 text-green-700 border border-green-200;
+  }
+  .pricing-freemium {
+    @apply bg-blue-50 text-blue-700 border border-blue-200;
+  }
+  .pricing-paid {
+    @apply bg-purple-50 text-purple-700 border border-purple-200;
+  }
+}
