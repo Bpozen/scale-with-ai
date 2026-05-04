@@ -1,0 +1,26 @@
+---
+export interface Props {
+  status: string | null;
+  serverLocation: string | null;
+}
+
+const { status, serverLocation } = Astro.props;
+
+const badgeClass = {
+  'voll-konform': 'badge-dsgvo-voll',
+  'teilweise': 'badge-dsgvo-teilweise',
+  'unklar': 'badge-dsgvo-unklar',
+  'nicht-konform': 'badge-dsgvo-nein',
+}[status || 'unklar'] || 'badge-dsgvo-unklar';
+
+const label = {
+  'voll-konform': 'DSGVO-konform',
+  'teilweise': 'DSGVO teilweise',
+  'unklar': 'DSGVO unklar',
+  'nicht-konform': 'Nicht DSGVO-konform',
+}[status || 'unklar'] || 'DSGVO unklar';
+---
+
+<span class={badgeClass} title={`Server-Standort: ${serverLocation || 'Unbekannt'}`}>
+  {label}
+</span>
