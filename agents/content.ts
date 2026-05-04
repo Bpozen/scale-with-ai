@@ -8,7 +8,7 @@ async function generateCategoryIntro(category: { slug: string; name_de: string }
 async function generateComparison(toolA: any, toolB: any): Promise<string> {
   return `# ${toolA.name} vs ${toolB.name}
 
-Beide Tools bieten KI-gestützte Funktionen für deutsches Business. ${toolA.name} ist bekannt für ${toolA.description_de.slice(0, 100)}. ${toolB.name} punktet mit ${toolB.description_de.slice(0, 100)}.
+  Beide Tools bieten KI-gestützte Funktionen für deutsches Business. ${toolA.name} ist bekannt für ${toolA.description_de?.slice(0, 100) || ''}. ${toolB.name} punktet mit ${toolB.description_de?.slice(0, 100) || ''}.
 
 ## Preisvergleich
 - **${toolA.name}**: ${toolA.pricing_model || 'Unbekannt'}
@@ -24,6 +24,7 @@ Die Wahl hängt von deinen spezifischen Anforderungen ab.`;
 
 export async function runContent(): Promise<AgentResult> {
   const errors: string[] = [];
+  let processed = 0;
 
   try {
     const { data: categories } = await supabase.from('categories').select('*');
@@ -32,6 +33,7 @@ export async function runContent(): Promise<AgentResult> {
         if (!cat.description_de) {
           const intro = await generateCategoryIntro(cat);
           await supabase.from('categories').update({ description_de: intro }).eq('id', cat.id);
+          processed++;
         }
       }
     }
@@ -60,6 +62,7 @@ export async function runContent(): Promise<AgentResult> {
             comparison_content_de: content,
             published_at: new Date().toISOString(),
           });
+          processed++;
         }
       }
     }
@@ -67,7 +70,7 @@ export async function runContent(): Promise<AgentResult> {
     errors.push(`Comparison generation failed: ${err}`);
   }
 
-  return { success: errors.length === 0, itemsProcessed: 0, errors };
+  return { success: errors.length === 0, itemsProcessed: processed, errors };
 }
 
 if (import.meta.main) {

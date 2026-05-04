@@ -10,7 +10,7 @@ export async function runSEO(): Promise<AgentResult> {
     if (tools) {
       for (const tool of tools) {
         const metaTitle = `${tool.name} KI-Tool — Test, Preise, DSGVO | Scale With AI`;
-        const metaDesc = `${tool.description_de.slice(0, 120)}... Finde Alternativen und vergleiche Preise.`;
+        const metaDesc = `${tool.description_de?.slice(0, 120) || ''}... Finde Alternativen und vergleiche Preise.`;
         // meta_title/meta_description are not in tools schema yet — would need schema update
         // For now, we just count them as processed
         processed++;
@@ -25,7 +25,7 @@ export async function runSEO(): Promise<AgentResult> {
     if (posts) {
       for (const post of posts) {
         const metaTitle = `${post.title_de} | Scale With AI Blog`;
-        const metaDesc = post.excerpt_de || post.content_de.slice(0, 150);
+        const metaDesc = post.excerpt_de || post.content_de?.slice(0, 150) || '';
 
         await supabase.from('blog_posts').update({
           meta_title: metaTitle,

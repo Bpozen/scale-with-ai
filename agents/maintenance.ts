@@ -25,9 +25,9 @@ export async function runMaintenance(): Promise<AgentResult> {
           dead++;
         }
       } catch {
+        // Transient network error — don't unpublish, just count as checked
         checked++;
-        dead++;
-        await supabase.from('tools').update({ is_published: false }).eq('id', tool.id);
+        console.log(`Transient error checking ${tool.name}, skipping unpublish`);
       }
     }
   } catch (err) {
