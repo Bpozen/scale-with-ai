@@ -7,7 +7,7 @@ const { slug } = Astro.params;
 const result = await getCategoryBySlug(slug!);
 
 if (!result) {
-  return Astro.redirect('/404');
+  return new Response(null, { status: 404 });
 }
 
 const { category, tools } = result;

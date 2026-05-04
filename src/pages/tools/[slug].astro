@@ -9,7 +9,7 @@ const { slug } = Astro.params;
 const tool = await getToolBySlug(slug!);
 
 if (!tool) {
-  return Astro.redirect('/404');
+  return new Response(null, { status: 404 });
 }
 
 const structuredData = {
