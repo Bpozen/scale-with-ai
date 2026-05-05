@@ -14,13 +14,13 @@ const badgeClass = {
 }[status || 'unklar'] || 'badge-dsgvo-unklar';
 
 const label = {
-  'voll-konform': 'DSGVO-konform',
-  'teilweise': 'DSGVO teilweise',
-  'unklar': 'DSGVO unklar',
-  'nicht-konform': 'Nicht DSGVO-konform',
-}[status || 'unklar'] || 'DSGVO unklar';
+  'voll-konform': 'DSGVO',
+  'teilweise': 'DSGVO-Teilw.',
+  'unklar': 'DSGVO?',
+  'nicht-konform': 'Nicht DSGVO',
+}[status || 'unklar'] || 'DSGVO?';
 ---
 
-<span class={badgeClass} title={`Server-Standort: ${serverLocation || 'Unbekannt'}`}>
+<span class={badgeClass} title={`Server: ${serverLocation || 'Unbekannt'}`}>
   {label}
 </span>

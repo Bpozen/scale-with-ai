@@ -25,58 +25,106 @@ const structuredData = {
 <Layout title="Scale With AI — Die besten KI-Tools für Deutschland" canonical="https://scale-with-ai.de/">
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
-  <section class="text-center py-16">
-    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-      KI-Tools für deutsches Business
-    </h1>
-    <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-      Finde die besten KI-Tools mit DSGVO-Check. Vergleiche, teste und skaliere dein Business.
-    </p>
-    <div class="flex gap-4 justify-center flex-wrap">
-      <a href="/tools" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
-        Alle KI-Tools entdecken
-      </a>
-      <a href="/categories" class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg border border-blue-600 hover:bg-blue-50 transition-colors">
-        Nach Kategorie filtern
-      </a>
+  <!-- Hero -->
+  <section class="hero-mesh relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 relative z-10">
+      <div class="max-w-3xl">
+        <div class="section-heading animate-fade-up">KI-TOOL VERZEICHNIS DACH</div>
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 animate-fade-up animate-fade-up-delay-1" style="color: var(--text-primary);">
+          Finde KI-Tools,<br />
+          <span class="text-gradient">die skalieren.</span>
+        </h1>
+        <p class="text-lg md:text-xl max-w-xl mb-10 leading-relaxed animate-fade-up animate-fade-up-delay-2" style="color: var(--text-secondary);">
+          Kuratiertes Verzeichnis der besten KI-Tools für deutsches Business. Mit DSGVO-Check, EU-Server-Info und deutschen Preisen.
+        </p>
+        <div class="flex gap-4 flex-wrap animate-fade-up animate-fade-up-delay-3">
+          <a href="/tools" class="btn-primary">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Alle KI-Tools
+          </a>
+          <a href="/categories" class="btn-secondary">
+            Nach Kategorie filtern
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="py-12">
-    <h2 class="text-2xl font-bold mb-6">Beliebte Kategorien</h2>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      {categories.map(cat => (
-        <a href={`/categories/${cat.slug}`} class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow text-center">
-          <h3 class="font-semibold text-gray-900">{cat.name_de}</h3>
-          <p class="text-sm text-gray-500 mt-1">{cat.description_de?.slice(0, 60)}...</p>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <section class="py-12">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold">Empfohlene KI-Tools</h2>
-      <a href="/tools" class="text-blue-600 hover:text-blue-800 font-medium">Alle anzeigen →</a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {featuredTools.map(tool => <ToolCard tool={tool} />)}
-    </div>
-  </section>
-
-  {latestPosts.length > 0 && (
-    <section class="py-12">
-      <h2 class="text-2xl font-bold mb-6">Neueste Artikel</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {latestPosts.map(post => (
-          <article class="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 class="font-semibold text-lg mb-2">
-              <a href={`/blog/${post.slug}`} class="hover:text-blue-600">{post.title_de}</a>
-            </h3>
-            <p class="text-gray-600 text-sm line-clamp-3">{post.excerpt_de}</p>
-          </article>
+  <!-- Categories -->
+  <section class="py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="section-heading mb-8">KATEGORIEN</div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        {categories.map(cat => (
+          <a href={`/categories/${cat.slug}`} class="pill-category">
+            <h3 class="font-mono text-sm font-medium" style="color: var(--text-primary);">{cat.name_de}</h3>
+            {cat.description_de && <p class="text-xs mt-1 line-clamp-2" style="color: var(--text-muted);">{cat.description_de.slice(0, 50)}...</p>}
+          </a>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Tools -->
+  <section class="py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <div class="section-heading">EMPFOHLEN</div>
+          <h2 class="text-2xl md:text-3xl font-bold" style="color: var(--text-primary);">Aktuelle KI-Tools</h2>
+        </div>
+        <a href="/tools" class="text-sm font-medium hover:text-[var(--accent)] transition-colors hidden md:block" style="color: var(--text-muted);">Alle anzeigen &rarr;</a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {featuredTools.map(tool => <ToolCard tool={tool} />)}
+      </div>
+      {featuredTools.length === 0 && (
+        <div class="text-center py-16 rounded-xl" style="background: var(--bg-surface); border: 1px solid var(--border-subtle);">
+          <p style="color: var(--text-muted);">Noch keine Tools im Verzeichnis. Agenten füllen das bald automatisch.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Blog -->
+  {latestPosts.length > 0 && (
+    <section class="py-16">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="section-heading mb-8">AUS DEM BLOG</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {latestPosts.map(post => (
+            <a href={`/blog/${post.slug}`} class="card-tool block hover:border-[var(--accent)]">
+              <h3 class="font-semibold text-base mb-2" style="color: var(--text-primary);">{post.title_de}</h3>
+              <p class="text-sm line-clamp-3" style="color: var(--text-secondary);">{post.excerpt_de || post.content_de.slice(0, 200)}...</p>
+              {post.published_at && (
+                <time class="text-xs mt-4 block font-mono" style="color: var(--text-muted);">
+                  {new Date(post.published_at).toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' })}
+                </time>
+              )}
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   )}
+
+  <!-- CTA Section -->
+  <section class="py-20">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="rounded-2xl p-8 md:p-12 text-center relative overflow-hidden" style="background: var(--bg-surface); border: 1px solid var(--border-subtle);">
+        <div class="absolute inset-0 opacity-30" style="background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(45, 212, 191, 0.08) 0%, transparent 70%);"></div>
+        <div class="relative z-10">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text-primary);">Bleibe auf dem Laufenden</h2>
+          <p class="text-base max-w-md mx-auto mb-8" style="color: var(--text-secondary);">Neue KI-Tools, DSGVO-Updates und Vergleiche — wöchentlich per RSS oder Newsletter.</p>
+          <div class="flex gap-4 justify-center flex-wrap">
+            <a href="/rss.xml" class="btn-secondary">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H7a1 1 0 01-1-1v-2z"/></svg>
+              RSS Feed
+            </a>
+            <a href="/tools" class="btn-primary">Verzeichnis erkunden</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>

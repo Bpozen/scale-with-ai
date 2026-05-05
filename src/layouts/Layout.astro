@@ -31,24 +31,38 @@ const siteUrl = 'https://scale-with-ai.de';
   {image && <meta name="twitter:image" content={image} />}
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen">
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="/" class="text-xl font-bold text-blue-600">Scale With AI</a>
-      <nav class="hidden md:flex gap-6">
-        <a href="/tools" class="text-gray-600 hover:text-blue-600">KI-Tools</a>
-        <a href="/categories" class="text-gray-600 hover:text-blue-600">Kategorien</a>
-        <a href="/blog" class="text-gray-600 hover:text-blue-600">Blog</a>
-        <a href="/compare" class="text-gray-600 hover:text-blue-600">Vergleich</a>
+<body class="min-h-screen noise-overlay">
+  <header class="fixed top-4 left-4 right-4 z-50">
+    <div class="max-w-6xl mx-auto glass rounded-xl px-5 py-3 flex items-center justify-between">
+      <a href="/" class="font-mono text-lg font-bold tracking-tight" style="color: var(--accent);">
+        <span style="color: var(--text-primary);">Scale</span>WithAI
+      </a>
+      <nav class="hidden md:flex items-center gap-1">
+        <a href="/tools" class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors hover:bg-white/5" style="color: var(--text-secondary);">KI-Tools</a>
+        <a href="/categories" class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors hover:bg-white/5" style="color: var(--text-secondary);">Kategorien</a>
+        <a href="/blog" class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors hover:bg-white/5" style="color: var(--text-secondary);">Blog</a>
+        <a href="/compare" class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors hover:bg-white/5" style="color: var(--text-secondary);">Vergleich</a>
       </nav>
+      <a href="/tools" class="btn-primary text-sm py-2 px-4 md:hidden">Entdecken</a>
     </div>
   </header>
-  <main class="max-w-6xl mx-auto px-4 py-8">
+
+  <main class="pt-24">
     <slot />
   </main>
-  <footer class="bg-white border-t border-gray-200 mt-16">
-    <div class="max-w-6xl mx-auto px-4 py-8 text-center text-gray-500 text-sm">
-      <p>&copy; 2026 Scale With AI. Alle KI-Tools mit DSGVO-Check.</p>
+
+  <footer style="border-top: 1px solid var(--border-subtle); margin-top: 6rem;">
+    <div class="max-w-6xl mx-auto px-4 py-12 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-mono text-sm font-bold tracking-tight" style="color: var(--text-primary);">ScaleWithAI</span>
+        <span style="color: var(--text-muted);" class="text-sm">— DSGVO-Check für KI-Tools</span>
+      </div>
+      <div class="flex items-center gap-6 text-sm" style="color: var(--text-muted);">
+        <a href="/tools" class="hover:text-[var(--accent)] transition-colors">Verzeichnis</a>
+        <a href="/blog" class="hover:text-[var(--accent)] transition-colors">Blog</a>
+        <a href="/rss.xml" class="hover:text-[var(--accent)] transition-colors">RSS</a>
+      </div>
+      <p class="text-sm" style="color: var(--text-muted);">&copy; 2026 Scale With AI</p>
     </div>
   </footer>
 </body>
